@@ -91,6 +91,11 @@ vector< double> dMaha_green_dots;
 vector< double> dMaha_red1_dots;
 vector< double> dMaha_red2_dots;
 
+ vector<double> dMaha_neighboor_red_dots1;
+  vector<double> dMaha_neighboor_red_dots2;
+   vector<double> dMaha_neighboor_red_dots3;
+    vector<double> dMaha_neighboor_red_dots4;
+
 vector< int> dMaha_dots_index;
 
 int update_counter = 0;
@@ -313,14 +318,12 @@ int main(int argc, char **argv)
             /* ******************************************************************************* */
              
              //store the four irelavent Mahalanobis for the neighboor line
-             vector<double> dMaha_neighboor_red_dots;
+            
              
-             dMaha_neighboor_red_dots.push_back(dMaha_right_higher_X);
-             dMaha_neighboor_red_dots.push_back(dMaha_right_higher_Y);
-             dMaha_neighboor_red_dots.push_back(dMaha_left_lower_X);
-             dMaha_neighboor_red_dots.push_back(dMaha_left_lower_Y);
-            
-            
+             dMaha_neighboor_red_dots1.push_back(dMaha_right_higher_X);
+             dMaha_neighboor_red_dots2.push_back(dMaha_right_higher_Y);
+             dMaha_neighboor_red_dots3.push_back(dMaha_left_lower_X);
+             dMaha_neighboor_red_dots4.push_back(dMaha_left_lower_Y);
             
             
            // cout << delta_mesure_X <<"  " << delta_mesure_Y << endl;
@@ -335,7 +338,7 @@ int main(int argc, char **argv)
 					dMaha_red2_dots.push_back(-10);
 					 
                     dMaha_dots_index.push_back(index);
-                    index = index +1;
+                    index = index + 1;
                 }
                 /*else if( abs(delta_mesure_X) == abs(delta_mesure_Y))
                 {
@@ -420,22 +423,32 @@ int main(int argc, char **argv)
         variance.theta = P(2,2);
         publisher_variance.publish(variance);
         
-        plt::plot(filted_x,filted_y,"r-",odom_x,odom_y,"k-");
+        /*plt::plot(filted_x,filted_y,"r-",odom_x,odom_y,"k-");
         plt::xlim(-1.5, 1.5);
         plt::ylim(-2.0, 2.5);
-        plt::pause(0.01);
+        plt::pause(0.01);*/
+          vector<double> w(dMaha_dots_index.size(), mahaThreshold);
+          
+          plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-",
+          dMaha_dots_index, dMaha_neighboor_red_dots1, "r.", dMaha_dots_index, dMaha_neighboor_red_dots2, "r.",
+          dMaha_dots_index, dMaha_neighboor_red_dots3, "r.", dMaha_dots_index, dMaha_neighboor_red_dots4, "r.");
+         // plt::xlim(-1.5, 1.5);
+          plt::ylim(0, 160);
+          plt::pause(0.01);
+          
+          /*plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-",
+          dMaha_dots_index, dMaha_neighboor_red_dots1, "r.",  dMaha_dots_index, dMaha_neighboor_red_dots4, "r.");
+          plt::pause(0.01);*/
+        
+        
     //    const char* filename = "/home/plot_test.png";
     //    plt::save(filename);*/
              
       //  ROS_INFO("1");
-    
-        
         loop_rate.sleep();
     }
     
-        /* vector<double> w(dMaha_dots_index.size(), mahaThreshold);
-         plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-");
-         plt::pause(10000);*/
+          
     
     
     
@@ -449,8 +462,5 @@ int main(int argc, char **argv)
     ROS_INFO("store done");
     //    plt::show();
     //    while(true);*/
-    
-    
-    
     return 0;
 }
