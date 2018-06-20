@@ -72,7 +72,7 @@ double encoder_coef = 2578.33;				//facteur de conversion donnée codeur -> angl
 double lr = 0.227*1.103;					//longueur entre les roues, track gauch
 double rr = 0.035;							//rayon des roues, the radius of the wheel
 double trackGauge = 0.227*1.103;
-double t_carreau = 0.1017;					//taille des carreaux (bat. D : 0.1017, bat. E : 0.30)
+double t_carreau = 0.30;					//taille des carreaux (bat. D : 0.1017, bat. E : 0.30)
 
 //sensor number and position definition
 double mys = 0.075;							//distance centre-capteur selon y, in robot fram
@@ -203,8 +203,8 @@ int main(int argc, char **argv)
     jointToCartesian <<         rr/2,             rr/2,
                            rr/trackGauge,   -rr/trackGauge;
     //Pose of depart, modify it based on real trajectory
-    X << 0, 0, 0*PI/180;
-    X1 << 0, 0, 0*PI/180;
+    X << 0, 0, 45*PI/180;
+    X1 << 0, 0, 45*PI/180;
     
     //Incertitude sur la position initiale
     P << pow(0.007,2), 0, 0,
@@ -429,17 +429,19 @@ int main(int argc, char **argv)
         plt::pause(0.01);*/
           vector<double> w(dMaha_dots_index.size(), mahaThreshold);
           
-          plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-",
+          /*plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-",
           dMaha_dots_index, dMaha_neighboor_red_dots1, "r.", dMaha_dots_index, dMaha_neighboor_red_dots2, "r.",
           dMaha_dots_index, dMaha_neighboor_red_dots3, "r.", dMaha_dots_index, dMaha_neighboor_red_dots4, "r.");
-         // plt::xlim(-1.5, 1.5);
           plt::ylim(0, 160);
-          plt::pause(0.01);
+          plt::pause(0.01);*/
           
           /*plt::plot(dMaha_dots_index, dMaha_green_dots,"g*", dMaha_dots_index, dMaha_red1_dots,"r.",  dMaha_dots_index, dMaha_red2_dots,"r.", dMaha_dots_index, w,"r-",
           dMaha_dots_index, dMaha_neighboor_red_dots1, "r.",  dMaha_dots_index, dMaha_neighboor_red_dots4, "r.");
           plt::pause(0.01);*/
-        
+          
+          plt::plot(filted_x,filted_y,"r-",odom_x,odom_y,"k-");
+          plt::pause(0.01);
+          
         
     //    const char* filename = "/home/plot_test.png";
     //    plt::save(filename);*/
@@ -447,12 +449,7 @@ int main(int argc, char **argv)
       //  ROS_INFO("1");
         loop_rate.sleep();
     }
-    
-          
-    
-    
-    
-    
+       
       /* plt::plot(filted_x,filted_y,"r-",odom_x,odom_y,"k-");
        //plt::pause(0.01);
        for(int i = 0; i < 100000000000000 ; )*/
