@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- This is the plugin that allows to perform simulation steps -->
+    <plugin name="gzsim_control_step" filename="libgzsim_control_step.so"/>
+
+
+
+
+    <model name="box">
+      <pose>0 0 2 0 0 0</pose>
+
+      <!-- This is the plugin that publishes information on /tf -->
+      <plugin name="gzsim_control_tfpub" filename="libgzsim_control_tfpub.so"/>
+
+      <link name="box">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.16</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.16</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.16</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision_box">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_box">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+
+      <joint name="boxes_joint" type="revolute">
+        <parent>box</parent>
+        <child>box2</child>
+        <pose>0 0 0 0 0 0</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+        </axis>
+      </joint>
+
+      <link name="box2">
+        <pose>0 3 0 0 0 0</pose>
+        <inertial>
+          <mass>0.3</mass>
+          <inertia>
+            <ixx>0.0045</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.0045</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.0045</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision_box2">
+          <geometry>
+            <box>
+              <size>0.3 0.3 0.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_box2">
+          <geometry>
+            <box>
+              <size>0.3 0.3 0.3</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="rover">
+      <pose>3 3 0 0 0</pose>
+
+
+      <plugin name="gzsim_control_tfpub" filename="libgzsim_control_tfpub.so">
+        <publishRate>50</publishRate>
+        <worldName>world</worldName>
+        <tfPrefix>foo</tfPrefix>
+      </plugin>
+
+      <include>
+        <uri>model://pioneer2dx</uri>
+        <pose>0 0 0.2 0 0 0</pose>
+      </include>
+    </model>
+
+  </world>
+</sdf>
